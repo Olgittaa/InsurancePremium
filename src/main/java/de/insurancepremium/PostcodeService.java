@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,11 +18,11 @@ public class PostcodeService {
 
     private final PostcodeRepository postcodeRepository;
 
-    public List<Postcode> getAllEmployees(){
+    public List<Postcode> getAllEmployees() {
         return postcodeRepository.findAll();
     }
 
-    public List<Postcode> savePostcodes () throws FileNotFoundException {
+    public List<Postcode> savePostcodes() throws FileNotFoundException {
         String fileName = "src/main/resources/postcodes.csv";
 
         List<Postcode> postcodes = new CsvToBeanBuilder(new FileReader(fileName))
@@ -30,6 +31,9 @@ public class PostcodeService {
                 .parse();
 
         return postcodeRepository.saveAll(postcodes);
+    }
 
+    public List<Postcode> findPostcode(String state, String district, String city, String location, String area, String zipcode) {
+        return postcodeRepository.findPostcode(state, district, city, location, area, zipcode);
     }
 }
